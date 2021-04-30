@@ -11,8 +11,8 @@ def data_transfer():
     input_file = sys.argv[1]
     test_size = sys.argv[2]
     run_num = sys.argv[3]
-    file_string = 'file:///home/tito/workspace/inputs/' + str(input_file)
-    perf_file = './perf/' + str(test_size) + '/perf_' + str(run_num) + '.csv'
+    file_string = 'file:///home/tito/workspace/dsp-final/inputs/' + str(input_file)
+    perf_file_name = './perf/' + str(test_size) + '/perf_' + str(run_num) + '.csv'
     start = time.time()
 
     env = StreamExecutionEnvironment.get_execution_environment()
@@ -20,13 +20,13 @@ def data_transfer():
 
     ds = env.read_text_file(file_string , 'UTF-8')
     ds.add_sink(StreamingFileSink
-                .for_row_format('/home/tito/workspace/outputs', SimpleStringEncoder())
+                .for_row_format('/home/tito/workspace/dsp-final/outputs', SimpleStringEncoder())
                 .build())
     
     env.execute('data_transfer_job')
     
     end = time.time()
-    perf_file = open(perf_file, 'w+')
+    perf_file = open(perf_file_name, 'w+')
     perf_file.write(f'{start},{end}\n') 
 
 if __name__ == '__main__':
